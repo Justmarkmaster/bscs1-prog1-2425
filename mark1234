@@ -1,0 +1,80 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+class User {
+private:
+    string username;
+    string password;
+    string userType;
+
+public:
+    User(string u, string p, string t) : username(u), password(p), userType(t) {}
+
+    string getUsername() const {
+        return username;
+    }
+
+    string getPassword() const {
+        return password;
+    }
+
+    string getUserType() const {
+        return userType;
+    }
+
+    bool validate(const string& inputUsername, const string& inputPassword) const {
+        return username == inputUsername && password == inputPassword;
+    }
+};
+
+class LoginSystem {
+private:
+    vector<User> users;
+
+public:
+    LoginSystem() {
+        users.push_back(User("Mark", "Ranboo1234", "Student"));
+        users.push_back(User("King Bob", "kingbob1234", "Administrator"));
+        users.push_back(User("Samuel", "AweSamDude1234", "Faculty"));
+    }
+
+    void login() {
+        cout << "Welcome to Login System" << endl;
+        int attempts = 3;
+        while (attempts > 0) {
+            string inputUsername, inputPassword;
+            cout << "Username: ";
+            getline(cin, inputUsername);
+            cout << "Password: ";
+            getline(cin, inputPassword);
+
+            for (const User &user : users) {
+                if (user.validate(inputUsername, inputPassword)) {
+                    if (user.getUserType() == "Student") {
+                        cout << "Welcome Student!" << endl;
+                    } else if (user.getUserType() == "Administrator") {
+                        cout << "Welcome Administrator!" << endl;
+                    } else if (user.getUserType() == "Faculty") {
+                        cout << "Welcome Faculty!" << endl;
+                    }
+                    cout << "Successfully Entered. Thank You!" << endl;
+                    return;
+                }
+            }
+
+            attempts--;
+            cout << "Invalid credentials. Please try again. Attempts left: " << attempts << endl;
+        }
+
+        cout << "Too many failed attempts. You are locked out." << endl;
+    }
+};
+
+int main() {
+    LoginSystem loginSystem;
+    loginSystem.login();
+    return 0;
+}
+    
